@@ -37,9 +37,9 @@ public class Player : MonoBehaviour
 			TurnOrder.ResetTurnOrder();
 			gameManager.GetComponent<CreateGrid>().ResetGrid();
         }
-        else
-        {
-            TurnOrder.EndTurn();
-        }
+        //else
+        //{
+        //    TurnOrder.EndTurn();
+        //}
     }
 }

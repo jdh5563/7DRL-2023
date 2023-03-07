@@ -27,6 +27,7 @@ public class CardinalEnemy : Enemy
 	protected override void Attack()
 	{
 		player.GetComponent<Player>().TakeDamage(1);
+		TurnOrder.EndTurn();
 	}
 
 	/// <summary>

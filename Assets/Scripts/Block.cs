@@ -7,7 +7,7 @@ public class Block : MonoBehaviour
     
     public Vector2Int currentTileCoords;
     private Vector2Int newTileCoords;
-    private bool isMoving = false;
+    public bool isMoving = false;
     private float percentDone = 0.05f;
 
     // Start is called before the first frame update

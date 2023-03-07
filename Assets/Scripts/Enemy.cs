@@ -20,7 +20,7 @@ public abstract class Enemy : MonoBehaviour
 	protected virtual void Update()
     {
 		// If it is this enemy's turn, try to attack or move
-		if (TurnOrder.IsObjectTurn(gameObject)) {
+		if (TurnOrder.IsObjectTurn(gameObject) && !player.GetComponent<MoveOnGrid>().block.GetComponent<Block>().isMoving) {
 			if (IsPlayerInRange()) Attack();
 			else if (!isMoving) Move();
 		}
