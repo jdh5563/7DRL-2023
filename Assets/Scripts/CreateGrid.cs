@@ -6,6 +6,8 @@ public class CreateGrid : MonoBehaviour
 {
     // Prefabs to instantiate
     [SerializeField] private GameObject playerPrefab;
+	[SerializeField] private GameObject blockPrefab;
+	[SerializeField] private GameObject buttonPrefab;
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private GameObject tilePrefab;
 
@@ -46,6 +48,7 @@ public class CreateGrid : MonoBehaviour
 		GameObject player = Instantiate(playerPrefab, randomTile.transform.position, Quaternion.identity);
 		player.GetComponent<MoveOnGrid>().currentTileCoords = randomStartCoords;
 		randomTile.GetComponent<Tile>().occupant = player;
+<<<<<<< Updated upstream
 		TurnOrder.turnOrder.Add(player);
 
 		for (int i = 0; i < gridWidth; i++)
@@ -63,4 +66,35 @@ public class CreateGrid : MonoBehaviour
 			}
 		}
 	}
+=======
+
+        // Spawn the enemy on a random tile at the top of the grid
+        randomStartCoords = new Vector2Int(gridHeight - 1, Random.Range(0, gridWidth));
+		randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+		GameObject enemy = Instantiate(enemyPrefabs[0], randomTile.transform.position, Quaternion.identity);
+		enemy.GetComponent<Enemy>().currentTileCoords = randomStartCoords;
+		enemy.GetComponent<Enemy>().player = player;
+		randomTile.GetComponent<Tile>().occupant = enemy;
+
+		// Add objects to the turn order
+		TurnOrder.turnOrder.Add(player);
+		TurnOrder.turnOrder.Add(enemy);
+
+        // Spawn a block on the second row
+        randomStartCoords = new Vector2Int(1, Random.Range(0, gridWidth));
+        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        GameObject block = Instantiate(blockPrefab, randomTile.transform.position, Quaternion.identity);
+        block.GetComponent<Block>().currentTileCoords = randomStartCoords;
+        player.GetComponent<MoveOnGrid>().block = block;
+        randomTile.GetComponent<Tile>().occupant = block;
+
+        // Spawn a button in a random location not on the rim
+        randomStartCoords = new Vector2Int(Random.Range(1, gridHeight - 2), Random.Range(1, gridWidth - 2));
+        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        GameObject button = Instantiate(buttonPrefab, randomTile.transform.position, Quaternion.identity);
+        button.GetComponent<Button>().tileCoords = randomStartCoords;
+        randomTile.GetComponent<Tile>().type = button;
+
+    }
+>>>>>>> Stashed changes
 }
