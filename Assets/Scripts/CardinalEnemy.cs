@@ -48,11 +48,54 @@ public class CardinalEnemy : Enemy
 
 		if (playerPos.y != currentTileCoords.y)
 		{
-			newTileCoords.y += playerPos.y > currentTileCoords.y ? 1 : -1;
+			int move = playerPos.y > currentTileCoords.y ? 1 : -1;
+
+			if (move == 1)
+			{
+				GameObject rightTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1];
+				if (rightTile.GetComponent<Tile>().occupant == null || rightTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				{
+					newTileCoords.y += move;
+					isMoving = true;
+					return;
+				}
+			}
+			else if (move == -1)
+			{
+				GameObject leftTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 1];
+				if (leftTile.GetComponent<Tile>().occupant == null || leftTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				{
+					newTileCoords.y += move;
+					isMoving = true;
+					return;
+				}
+			}
 		}
-		else if(playerPos.x != currentTileCoords.x)
+
+
+		if (playerPos.x != currentTileCoords.x)
 		{
-			newTileCoords.x += playerPos.x > currentTileCoords.x ? 1 : -1;
+			int move = playerPos.x > currentTileCoords.x ? 1 : -1;
+
+			if (move == 1)
+			{
+				GameObject upTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y];
+				if (upTile.GetComponent<Tile>().occupant == null || upTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				{
+					newTileCoords.x += move;
+					isMoving = true;
+					return;
+				}
+			}
+			else if (move == -1) {
+				GameObject downTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y];
+				if (downTile.GetComponent<Tile>().occupant == null || downTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				{
+					newTileCoords.x += move;
+					isMoving = true;
+					return;
+				}
+			}
 		}
 
 		isMoving = true;

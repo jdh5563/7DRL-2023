@@ -46,17 +46,21 @@ public class CreateGrid : MonoBehaviour
 		GameObject player = Instantiate(playerPrefab, randomTile.transform.position, Quaternion.identity);
 		player.GetComponent<MoveOnGrid>().currentTileCoords = randomStartCoords;
 		randomTile.GetComponent<Tile>().occupant = player;
-
-		// Spawn the enemy on a random tile at the top of the grid
-		randomStartCoords = new Vector2Int(gridHeight - 1, Random.Range(0, gridWidth));
-		randomTile = grid[randomStartCoords.x, randomStartCoords.y];
-		GameObject enemy = Instantiate(enemyPrefabs[0], randomTile.transform.position, Quaternion.identity);
-		enemy.GetComponent<Enemy>().currentTileCoords = randomStartCoords;
-		enemy.GetComponent<Enemy>().player = player;
-		randomTile.GetComponent<Tile>().occupant = enemy;
-
-		// Add objects to the turn order
 		TurnOrder.turnOrder.Add(player);
-		TurnOrder.turnOrder.Add(enemy);
+
+		for (int i = 0; i < gridWidth; i++)
+		{
+			if(Random.Range(0f, 1f) < 0.5f)
+			{
+				// Spawn the enemy on a random tile at the top of the grid
+				randomStartCoords = new Vector2Int(gridHeight - 1, i);
+				randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+				GameObject enemy = Instantiate(enemyPrefabs[0], randomTile.transform.position, Quaternion.identity);
+				enemy.GetComponent<Enemy>().currentTileCoords = randomStartCoords;
+				enemy.GetComponent<Enemy>().player = player;
+				randomTile.GetComponent<Tile>().occupant = enemy;
+				TurnOrder.turnOrder.Add(enemy);
+			}
+		}
 	}
 }
