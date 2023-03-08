@@ -244,6 +244,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 1916268950080239007, guid: e2c84bb419675494bb40e2e0fc47688e, type: 3}
   tilePrefab: {fileID: 6466291653740598643, guid: 8115bfd16b2615e48b633e24bd0e20e3, type: 3}
+  exitPrefab: {fileID: 5462829753431274685, guid: 879ef97f079dafb4793087a29ac789b2, type: 3}
 --- !u!4 &845022446
 Transform:
   m_ObjectHideFlags: 0
