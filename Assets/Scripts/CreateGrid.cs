@@ -8,8 +8,10 @@ public class CreateGrid : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject blockPrefab;
 	[SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private GameObject leverPrefab;
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject exitPrefab;
 
     // Fields to modify grid size
     [SerializeField] private static int gridWidth = 5;
@@ -32,6 +34,7 @@ public class CreateGrid : MonoBehaviour
 
     public void ResetGrid()
     {
+
         // Create the grid
         for (int i = 0; i < gridHeight; i++)
         {
@@ -66,8 +69,8 @@ public class CreateGrid : MonoBehaviour
             }
         }
 
-        // Spawn a block on the second row
-        randomStartCoords = new Vector2Int(1, Random.Range(0, gridWidth));
+        // Spawn a block on the second row not on the rim
+        randomStartCoords = new Vector2Int(1, Random.Range(1, gridWidth - 2));
         randomTile = grid[randomStartCoords.x, randomStartCoords.y];
         GameObject block = Instantiate(blockPrefab, randomTile.transform.position, Quaternion.identity);
         block.GetComponent<Block>().currentTileCoords = randomStartCoords;
@@ -80,5 +83,21 @@ public class CreateGrid : MonoBehaviour
         GameObject button = Instantiate(buttonPrefab, randomTile.transform.position, Quaternion.identity);
         button.GetComponent<Button>().tileCoords = randomStartCoords;
         randomTile.GetComponent<Tile>().type = button;
+
+        // Spawn a lever in a random location
+        randomStartCoords = new Vector2Int(Random.Range(0, gridHeight - 1), Random.Range(0, gridWidth - 1));
+        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        GameObject lever = Instantiate(leverPrefab, randomTile.transform.position, Quaternion.identity);
+        lever.GetComponent<Lever>().tileCoords = randomStartCoords;
+        randomTile.GetComponent<Tile>().type = lever;
+
+        // Spawn the exit in a random location
+        randomStartCoords = new Vector2Int(Random.Range(0, gridHeight - 1), Random.Range(0, gridWidth - 1));
+        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        GameObject exit = Instantiate(exitPrefab, randomTile.transform.position, Quaternion.identity);
+        exit.GetComponent<Exit>().tileCoords = randomStartCoords;
+        exit.GetComponent<Exit>().lever = lever;
+        exit.GetComponent<Exit>().button = button;
+        randomTile.GetComponent<Tile>().type = exit;
     }
 }
