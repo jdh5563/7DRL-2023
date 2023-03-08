@@ -18,4 +18,9 @@ public class Tile : MonoBehaviour
     {
         
     }
+
+    public bool IsUnoccupied()
+    {
+        return occupant == null || (occupant.tag != "Block" && occupant.tag != "Enemy" && occupant.tag != "Player");
+	}
 }

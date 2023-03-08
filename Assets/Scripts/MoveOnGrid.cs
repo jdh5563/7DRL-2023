@@ -58,32 +58,32 @@ public class MoveOnGrid : MonoBehaviour
 		{
 			tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
 
-			if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
+			if (tile.GetComponent<Tile>().IsUnoccupied())
 			{
 				isMoving = true;
 				endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
 				oldTileCoords = currentTileCoords;
 				currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
 			}
-			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
+			else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
 			{
-				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false);
+				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false, gameObject);
 			}
 		}
 		else if (!isMoving && Input.GetAxisRaw("Vertical") != 0)
 		{
 			tile = CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y];
 
-			if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
+			if (tile.GetComponent<Tile>().IsUnoccupied())
 			{
 				isMoving = true;
 				endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
 				oldTileCoords = currentTileCoords;
 				currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
 			}
-			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
+			else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 			{
-				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true);
+				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true, gameObject);
 			}
 		}
 	}

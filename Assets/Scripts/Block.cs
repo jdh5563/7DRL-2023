@@ -9,6 +9,7 @@ public class Block : MonoBehaviour
     private Vector2Int newTileCoords;
     public bool isMoving = false;
     private float percentDone = 0.05f;
+    private GameObject pusher = null;
 
     // Start is called before the first frame update
     void Start()
@@ -38,14 +39,15 @@ public class Block : MonoBehaviour
                 currentTileCoords = newTileCoords;
                 percentDone = 0.05f;
                 isMoving = false;
-                TurnOrder.EndTurn(TurnOrder.turnOrder[0]);
+                TurnOrder.EndTurn(pusher);
 			}
         }
     }
 
     // Moves the block based on the direction it was pushed
-    public void Move(int direction, bool vertical)
+    public void Move(int direction, bool vertical, GameObject _pusher)
     {
+        pusher = _pusher;
         newTileCoords = currentTileCoords;
         if (vertical)
         {

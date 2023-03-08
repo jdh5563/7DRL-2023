@@ -55,7 +55,7 @@ public class CardinalEnemy : Enemy
 			if (move == 1)
 			{
 				GameObject rightTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1];
-				if (rightTile.GetComponent<Tile>().occupant == null || rightTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				if (rightTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.y += move;
 					isMoving = true;
@@ -63,16 +63,26 @@ public class CardinalEnemy : Enemy
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
+				else if (rightTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 2].GetComponent<Tile>().IsUnoccupied())
+				{
+					rightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					return;
+				}
 			}
 			else if (move == -1)
 			{
 				GameObject leftTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 1];
-				if (leftTile.GetComponent<Tile>().occupant == null || leftTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				if (leftTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.y += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					return;
+				}
+				else if (leftTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 2].GetComponent<Tile>().IsUnoccupied())
+				{
+					leftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, false, gameObject);
 					return;
 				}
 			}
@@ -86,7 +96,7 @@ public class CardinalEnemy : Enemy
 			if (move == 1)
 			{
 				GameObject upTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y];
-				if (upTile.GetComponent<Tile>().occupant == null || (upTile.GetComponent<Tile>().occupant.tag != "Block" && upTile.GetComponent<Tile>().occupant.tag != "Enemy"))
+				if (upTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.x += move;
 					isMoving = true;
@@ -94,15 +104,25 @@ public class CardinalEnemy : Enemy
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
+				else if (upTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+				{
+					upTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, true, gameObject);
+					return;
+				}
 			}
 			else if (move == -1) {
 				GameObject downTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y];
-				if (downTile.GetComponent<Tile>().occupant == null || (downTile.GetComponent<Tile>().occupant.tag != "Block" && downTile.GetComponent<Tile>().occupant.tag != "Enemy"))
+				if (downTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.x += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					return;
+				}
+				else if (downTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x - 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+				{
+					downTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, true, gameObject);
 					return;
 				}
 			}
