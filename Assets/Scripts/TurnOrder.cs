@@ -16,8 +16,22 @@ public class TurnOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+		if (IsObjectTurn(turnOrder[0]))
+		{
+            turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();
+		}
+
+        if (!turnOrder[0].GetComponent<MoveOnGrid>().canAct)
+        {
+            for (int i = 1; i < turnOrder.Count; i++)
+            {
+                if (IsObjectTurn(turnOrder[i]))
+                {
+					turnOrder[i].GetComponent<Enemy>().canAct = true;
+				}
+            }
+        }
+	}
 
     /// <summary>
     /// Return whether it is this object's turn
@@ -25,17 +39,41 @@ public class TurnOrder : MonoBehaviour
     /// <param name="obj">The object to check</param>
     public static bool IsObjectTurn(GameObject obj)
     {
-        return turnOrder[currentTurn] == obj;
+        return obj == turnOrder[0] ? obj.GetComponent<MoveOnGrid>().turnTimer == 0 : obj.GetComponent<Enemy>().turnTimer == 0;
+
+        //return turnOrder[currentTurn] == obj;
     }
 
     /// <summary>
     /// Move to the next object's turn
     /// </summary>
-    public static void EndTurn()
+    public static void EndTurn(GameObject obj)
     {
-        currentTurn++;
-        currentTurn %= turnOrder.Count;
-    }
+		if (turnOrder[0].GetComponent<MoveOnGrid>().turnTimer != 0)
+		{
+			turnOrder[0].GetComponent<MoveOnGrid>().turnTimer--;
+		}
+
+		for (int i = 1; i < turnOrder.Count; i++)
+        {
+			if (turnOrder[i].GetComponent<Enemy>().turnTimer != 0)
+			{
+				turnOrder[i].GetComponent<Enemy>().turnTimer--;
+			}
+        }
+
+		if (obj == turnOrder[0])
+		{
+            obj.GetComponent<MoveOnGrid>().turnTimer = obj.GetComponent<MoveOnGrid>().maxTimer;
+		}
+        else
+        {
+			obj.GetComponent<Enemy>().turnTimer -= obj.GetComponent<Enemy>().maxTimer;
+		}
+
+		//currentTurn++;
+		//currentTurn %= turnOrder.Count;
+	}
 
     /// <summary>
     /// Destroy all objects and reset the turn order

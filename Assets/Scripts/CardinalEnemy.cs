@@ -7,7 +7,8 @@ public class CardinalEnemy : Enemy
 	// Start is called before the first frame update
 	void Start()
 	{
-
+		maxTimer = 2;
+		turnTimer = maxTimer;
 	}
 
 	// Update is called once per frame
@@ -27,7 +28,7 @@ public class CardinalEnemy : Enemy
 	protected override void Attack()
 	{
 		player.GetComponent<Player>().TakeDamage(1);
-		TurnOrder.EndTurn();
+		//TurnOrder.EndTurn(gameObject);
 	}
 
 	/// <summary>

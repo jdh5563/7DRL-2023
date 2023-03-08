@@ -10,6 +10,10 @@ public abstract class Enemy : MonoBehaviour
 	protected bool isMoving = false;
     protected float percentDone = 0.05f;
 
+	public int maxTimer;
+	public int turnTimer;
+	public bool canAct = false;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -20,7 +24,7 @@ public abstract class Enemy : MonoBehaviour
 	protected virtual void Update()
     {
 		// If it is this enemy's turn, try to attack or move
-		if (TurnOrder.IsObjectTurn(gameObject) && !player.GetComponent<MoveOnGrid>().block.GetComponent<Block>().isMoving) {
+		if (canAct && !player.GetComponent<MoveOnGrid>().block.GetComponent<Block>().isMoving) {
 			if (IsPlayerInRange()) Attack();
 			else if (!isMoving) Move();
 		}
@@ -43,7 +47,7 @@ public abstract class Enemy : MonoBehaviour
 				currentTileCoords = newTileCoords;
 				percentDone = 0.05f;
 				isMoving = false;
-				TurnOrder.EndTurn();
+				//TurnOrder.EndTurn(gameObject);
 			}
 		}
 	}
