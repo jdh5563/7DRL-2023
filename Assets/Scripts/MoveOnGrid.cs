@@ -14,9 +14,6 @@ public class MoveOnGrid : MonoBehaviour
     public Vector2Int currentTileCoords;
     private Vector2Int oldTileCoords;
 
-    public int maxTimer = 1;
-    public int turnTimer = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +44,7 @@ public class MoveOnGrid : MonoBehaviour
                 basePosition = endPosition;
                 percentDone = 0.05f;
                 isMoving = false;
-				//TurnOrder.EndTurn(gameObject);
+				TurnOrder.EndTurn(gameObject);
 			}
         }
 	}
@@ -57,7 +54,7 @@ public class MoveOnGrid : MonoBehaviour
 		// If it is the player's turn, move to the chosen tile
 		GameObject tile;
 
-		if (!isMoving && Input.GetAxisRaw("Horizontal") != 0)
+		if (!isMoving && !block.GetComponent<Block>().isMoving && Input.GetAxisRaw("Horizontal") != 0)
 		{
 			tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
 
@@ -71,7 +68,6 @@ public class MoveOnGrid : MonoBehaviour
 			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
 			{
 				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false);
-				//TurnOrder.EndTurn(gameObject);
 			}
 		}
 		else if (!isMoving && Input.GetAxisRaw("Vertical") != 0)
@@ -88,7 +84,6 @@ public class MoveOnGrid : MonoBehaviour
 			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
 			{
 				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true);
-				//TurnOrder.EndTurn(gameObject);
 			}
 		}
 	}

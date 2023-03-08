@@ -28,7 +28,7 @@ public class CardinalEnemy : Enemy
 	protected override void Attack()
 	{
 		player.GetComponent<Player>().TakeDamage(1);
-		//TurnOrder.EndTurn(gameObject);
+		TurnOrder.EndTurn(gameObject);
 	}
 
 	/// <summary>
@@ -59,6 +59,8 @@ public class CardinalEnemy : Enemy
 				{
 					newTileCoords.y += move;
 					isMoving = true;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
 			}
@@ -69,6 +71,8 @@ public class CardinalEnemy : Enemy
 				{
 					newTileCoords.y += move;
 					isMoving = true;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
 			}
@@ -82,19 +86,23 @@ public class CardinalEnemy : Enemy
 			if (move == 1)
 			{
 				GameObject upTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y];
-				if (upTile.GetComponent<Tile>().occupant == null || upTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				if (upTile.GetComponent<Tile>().occupant == null || (upTile.GetComponent<Tile>().occupant.tag != "Block" && upTile.GetComponent<Tile>().occupant.tag != "Enemy"))
 				{
 					newTileCoords.x += move;
 					isMoving = true;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
 			}
 			else if (move == -1) {
 				GameObject downTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y];
-				if (downTile.GetComponent<Tile>().occupant == null || downTile.GetComponent<Tile>().occupant.tag != "Enemy")
+				if (downTile.GetComponent<Tile>().occupant == null || (downTile.GetComponent<Tile>().occupant.tag != "Block" && downTile.GetComponent<Tile>().occupant.tag != "Enemy"))
 				{
 					newTileCoords.x += move;
 					isMoving = true;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
 			}

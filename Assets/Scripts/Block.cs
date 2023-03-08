@@ -38,7 +38,8 @@ public class Block : MonoBehaviour
                 currentTileCoords = newTileCoords;
                 percentDone = 0.05f;
                 isMoving = false;
-            }
+                TurnOrder.EndTurn(TurnOrder.turnOrder[0]);
+			}
         }
     }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class TurnOrder : MonoBehaviour
 {
     public static List<GameObject> turnOrder = new List<GameObject>();
-    private static int currentTurn = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -16,19 +15,17 @@ public class TurnOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (IsObjectTurn(turnOrder[0]))
+		if (IsPlayerTurn())
 		{
             turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();
-
 		}
-
-        if (!turnOrder[0].GetComponent<MoveOnGrid>().canAct)
+        else
         {
             for (int i = 1; i < turnOrder.Count; i++)
             {
-                if (IsObjectTurn(turnOrder[i]))
+                if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0)
                 {
-					turnOrder[i].GetComponent<Enemy>().canAct = true;
+                    turnOrder[i].GetComponent<Enemy>().TakeAction();
 				}
             }
         }
@@ -38,42 +35,38 @@ public class TurnOrder : MonoBehaviour
     /// Return whether it is this object's turn
     /// </summary>
     /// <param name="obj">The object to check</param>
-    public static bool IsObjectTurn(GameObject obj)
+    public static bool IsPlayerTurn()
     {
-        return obj == turnOrder[0] ? obj.GetComponent<MoveOnGrid>().turnTimer == 0 : obj.GetComponent<Enemy>().turnTimer == 0;
+		for (int i = 1; i < turnOrder.Count; i++)
+		{
+			if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0)
+			{
+                return false;
+			}
+		}
 
-        //return turnOrder[currentTurn] == obj;
-    }
+        return true;
+	}
 
     /// <summary>
     /// Move to the next object's turn
     /// </summary>
     public static void EndTurn(GameObject obj)
     {
-		if (turnOrder[0].GetComponent<MoveOnGrid>().turnTimer != 0)
+        if (obj == turnOrder[0])
 		{
-			turnOrder[0].GetComponent<MoveOnGrid>().turnTimer--;
-		}
-
-		for (int i = 1; i < turnOrder.Count; i++)
-        {
-			if (turnOrder[i].GetComponent<Enemy>().turnTimer != 0)
-			{
-				turnOrder[i].GetComponent<Enemy>().turnTimer--;
-			}
-        }
-
-		if (obj == turnOrder[0])
-		{
-            obj.GetComponent<MoveOnGrid>().turnTimer = obj.GetComponent<MoveOnGrid>().maxTimer;
+            for(int i = 1; i < turnOrder.Count; i++)
+            {
+                if (turnOrder[i].GetComponent<Enemy>().turnTimer != 0)
+                {
+                    turnOrder[i].GetComponent<Enemy>().turnTimer--;
+                }
+            }
 		}
         else
         {
-			obj.GetComponent<Enemy>().turnTimer -= obj.GetComponent<Enemy>().maxTimer;
+			obj.GetComponent<Enemy>().turnTimer = obj.GetComponent<Enemy>().maxTimer;
 		}
-
-		//currentTurn++;
-		//currentTurn %= turnOrder.Count;
 	}
 
     /// <summary>
@@ -87,7 +80,5 @@ public class TurnOrder : MonoBehaviour
             turnOrder.RemoveAt(0);
             Destroy(entity);
         }
-
-        currentTurn = 0;
     }
 }
