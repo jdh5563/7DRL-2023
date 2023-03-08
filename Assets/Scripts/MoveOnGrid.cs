@@ -16,7 +16,6 @@ public class MoveOnGrid : MonoBehaviour
 
     public int maxTimer = 1;
     public int turnTimer = 0;
-    public bool canAct = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,46 +27,7 @@ public class MoveOnGrid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If it is the player's turn, move to the chosen tile
-        if (canAct)
-        {
-            GameObject tile;
 
-			if (!isMoving && Input.GetAxisRaw("Horizontal") != 0)
-            {
-                tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
-
-                if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
-                {
-                    isMoving = true;
-                    endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
-                    oldTileCoords = currentTileCoords;
-                    currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
-                }
-                else if (tile.GetComponent<Tile>().occupant.tag == "Block")
-                {
-                    block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false);
-                    //TurnOrder.EndTurn(gameObject);
-                }
-            }
-            else if (!isMoving && Input.GetAxisRaw("Vertical") != 0)
-            {
-                tile = CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y];
-
-                if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
-                {
-                    isMoving = true;
-                    endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
-                    oldTileCoords = currentTileCoords;
-                    currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
-                }
-                else if (tile.GetComponent<Tile>().occupant.tag == "Block")
-                {
-                    block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true);
-                    //TurnOrder.EndTurn(gameObject);
-                }
-            }
-        }
     }
 
 	private void FixedUpdate()
@@ -90,5 +50,46 @@ public class MoveOnGrid : MonoBehaviour
 				//TurnOrder.EndTurn(gameObject);
 			}
         }
+	}
+
+    public void TakeAction()
+    {
+		// If it is the player's turn, move to the chosen tile
+		GameObject tile;
+
+		if (!isMoving && Input.GetAxisRaw("Horizontal") != 0)
+		{
+			tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
+
+			if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
+			{
+				isMoving = true;
+				endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
+				oldTileCoords = currentTileCoords;
+				currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
+			}
+			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
+			{
+				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false);
+				//TurnOrder.EndTurn(gameObject);
+			}
+		}
+		else if (!isMoving && Input.GetAxisRaw("Vertical") != 0)
+		{
+			tile = CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y];
+
+			if (tile.GetComponent<Tile>().occupant == null || (tile.GetComponent<Tile>().occupant.tag != "Block" && tile.GetComponent<Tile>().occupant.tag != "Enemy"))
+			{
+				isMoving = true;
+				endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
+				oldTileCoords = currentTileCoords;
+				currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
+			}
+			else if (tile.GetComponent<Tile>().occupant.tag == "Block")
+			{
+				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true);
+				//TurnOrder.EndTurn(gameObject);
+			}
+		}
 	}
 }

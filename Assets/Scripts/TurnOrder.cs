@@ -19,6 +19,7 @@ public class TurnOrder : MonoBehaviour
 		if (IsObjectTurn(turnOrder[0]))
 		{
             turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();
+
 		}
 
         if (!turnOrder[0].GetComponent<MoveOnGrid>().canAct)
