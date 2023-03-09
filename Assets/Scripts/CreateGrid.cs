@@ -40,9 +40,13 @@ public class CreateGrid : MonoBehaviour
         {
             for (int j = 0; j < gridWidth; j++)
             {
-                Destroy(grid[i, j]);
-                if (grid[i, j].GetComponent<Tile>().occupant != null) Destroy(grid[i, j].GetComponent<Tile>().occupant);
-                //Destroy(grid[i, j].GetComponent<Tile>().type);
+                if (grid[i, j] != null)
+                {
+                    if (grid[i, j].GetComponent<Tile>().occupant != null) Destroy(grid[i, j].GetComponent<Tile>().occupant);
+                    Destroy(grid[i, j].GetComponent<Tile>().type);
+					Destroy(grid[i, j]);
+				}
+
                 grid[i, j] = Instantiate(tilePrefab, new Vector2(j - (gridWidth / 2f), i - (gridHeight / 2f)), Quaternion.identity);
             }
         }
