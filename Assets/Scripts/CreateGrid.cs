@@ -32,9 +32,13 @@ public class CreateGrid : MonoBehaviour
         
     }
 
+    public static bool IsValidTile(int x, int y)
+    {
+        return x >= 0 && x < gridHeight && y >= 0 && y < gridWidth;
+    }
+
     public void ResetGrid()
     {
-
         // Create the grid
         for (int i = 0; i < gridHeight; i++)
         {
@@ -105,5 +109,6 @@ public class CreateGrid : MonoBehaviour
         exit.GetComponent<Exit>().lever = lever;
         exit.GetComponent<Exit>().button = button;
         randomTile.GetComponent<Tile>().type = exit;
+        TurnOrder.exit = exit.GetComponent<Exit>();
     }
 }

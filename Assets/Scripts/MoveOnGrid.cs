@@ -54,36 +54,39 @@ public class MoveOnGrid : MonoBehaviour
 		// If it is the player's turn, move to the chosen tile
 		GameObject tile;
 
-		if (!isMoving && !block.GetComponent<Block>().isMoving && Input.GetAxisRaw("Horizontal") != 0)
+		if (!isMoving && !block.GetComponent<Block>().isMoving)
 		{
-			tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
+			if (Input.GetAxisRaw("Horizontal") != 0 && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")))
+			{
+				tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
 
-			if (tile.GetComponent<Tile>().IsUnoccupied())
-			{
-				isMoving = true;
-				endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
-				oldTileCoords = currentTileCoords;
-				currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
+				if (tile.GetComponent<Tile>().IsUnoccupied())
+				{
+					isMoving = true;
+					endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
+					oldTileCoords = currentTileCoords;
+					currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
+				}
+				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
+				{
+					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false, gameObject);
+				}
 			}
-			else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
+			else if (Input.GetAxisRaw("Vertical") != 0 && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y))
 			{
-				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false, gameObject);
-			}
-		}
-		else if (!isMoving && Input.GetAxisRaw("Vertical") != 0)
-		{
-			tile = CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y];
+				tile = CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y];
 
-			if (tile.GetComponent<Tile>().IsUnoccupied())
-			{
-				isMoving = true;
-				endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
-				oldTileCoords = currentTileCoords;
-				currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
-			}
-			else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
-			{
-				block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true, gameObject);
+				if (tile.GetComponent<Tile>().IsUnoccupied())
+				{
+					isMoving = true;
+					endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
+					oldTileCoords = currentTileCoords;
+					currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
+				}
+				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+				{
+					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true, gameObject);
+				}
 			}
 		}
 	}

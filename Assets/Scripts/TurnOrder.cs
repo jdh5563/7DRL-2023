@@ -5,6 +5,7 @@ using UnityEngine;
 public class TurnOrder : MonoBehaviour
 {
     public static List<GameObject> turnOrder = new List<GameObject>();
+    public static Exit exit;
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,9 @@ public class TurnOrder : MonoBehaviour
                     turnOrder[i].GetComponent<Enemy>().turnTimer--;
                 }
             }
+
+			if (exit.open - 1 >= 0) exit.open--;
+            Debug.Log(exit.open);
 		}
         else
         {
