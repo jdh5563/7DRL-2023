@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Exit : MonoBehaviour
@@ -29,9 +30,11 @@ public class Exit : MonoBehaviour
             TurnOrder.ResetTurnOrder();
             gameManager.GetComponent<CreateGrid>().ResetGrid();
         }
+
         if (lever.GetComponent<Lever>().active || button.GetComponent<Button>().active)
         {
             open = 2;
         }
+
     }
 }
