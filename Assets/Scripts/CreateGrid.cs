@@ -60,7 +60,7 @@ public class CreateGrid : MonoBehaviour
 
         // Spawn the player on a random tile at the bottom of the grid
         bool northSouth = Random.Range(0f, 1f) < 0.5f;
-        Vector2Int randomStartCoords = new Vector2Int(0, Random.Range(0, gridWidth));
+        Vector2Int randomStartCoords = northSouth ? new Vector2Int(0, Random.Range(0, gridWidth)) : new Vector2Int(Random.Range(0, gridHeight), 0);
         GameObject randomTile = grid[randomStartCoords.x, randomStartCoords.y];
         GameObject player = Instantiate(playerPrefab, randomTile.transform.position, Quaternion.identity);
         player.GetComponent<MoveOnGrid>().currentTileCoords = randomStartCoords;
