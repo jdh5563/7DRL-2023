@@ -65,7 +65,7 @@ public class CardinalEnemy : Enemy
 				}
 				else if (rightTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 2].GetComponent<Tile>().IsUnoccupied())
 				{
-					rightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					rightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(0, 1, gameObject);
 					return;
 				}
 			}
@@ -82,7 +82,7 @@ public class CardinalEnemy : Enemy
 				}
 				else if (leftTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y - 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 2].GetComponent<Tile>().IsUnoccupied())
 				{
-					leftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, false, gameObject);
+					leftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(0, -1, gameObject);
 					return;
 				}
 			}
@@ -106,7 +106,7 @@ public class CardinalEnemy : Enemy
 				}
 				else if (upTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 				{
-					upTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, true, gameObject);
+					upTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, 0, gameObject);
 					return;
 				}
 			}
@@ -122,7 +122,7 @@ public class CardinalEnemy : Enemy
 				}
 				else if (downTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x - 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x - 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 				{
-					downTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, true, gameObject);
+					downTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, 0, gameObject);
 					return;
 				}
 			}

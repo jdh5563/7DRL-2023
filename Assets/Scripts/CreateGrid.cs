@@ -39,8 +39,8 @@ public class CreateGrid : MonoBehaviour
 
     public void ResetGrid()
     {
-		gridWidth = Random.Range(5, 10);
-		gridHeight = Random.Range(5, 10);
+		//gridWidth = Random.Range(5, 10);
+		//gridHeight = Random.Range(5, 10);
 
 		// Create the grid
 		for (int i = 0; i < gridHeight; i++)

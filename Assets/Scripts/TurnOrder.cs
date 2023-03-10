@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TurnOrder : MonoBehaviour
 {
@@ -16,15 +17,18 @@ public class TurnOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
 		if (IsPlayerTurn())
 		{
             turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();
-		}
+        }
         else
         {
             for (int i = 1; i < turnOrder.Count; i++)
             {
-                if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0)
+                if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0 && !exit.IsExiting())
                 {
                     turnOrder[i].GetComponent<Enemy>().TakeAction();
 				}
@@ -64,8 +68,7 @@ public class TurnOrder : MonoBehaviour
                 }
             }
 
-			if (exit.open - 1 >= 0) exit.open--;
-            Debug.Log(exit.open);
+			exit.open--;
 		}
         else
         {
