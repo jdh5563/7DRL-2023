@@ -243,6 +243,7 @@ MonoBehaviour:
   leverPrefab: {fileID: 7079490945748229388, guid: d88409f897de8694b815736925420d6a, type: 3}
   enemyPrefabs:
   - {fileID: 1916268950080239007, guid: e2c84bb419675494bb40e2e0fc47688e, type: 3}
+  - {fileID: 4913063050989244143, guid: 6dd251aaf8f9ec047b2731fc4d5eec83, type: 3}
   tilePrefab: {fileID: 6466291653740598643, guid: 8115bfd16b2615e48b633e24bd0e20e3, type: 3}
   exitPrefab: {fileID: 5462829753431274685, guid: 879ef97f079dafb4793087a29ac789b2, type: 3}
 --- !u!4 &845022446

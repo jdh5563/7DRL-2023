@@ -64,14 +64,14 @@ public class CreateGrid : MonoBehaviour
 
         TurnOrder.turnOrder.Add(player);
 
-        for (int i = 0; i < gridWidth; i++)
+		for (int i = 0; i < gridWidth; i++)
         {
             if (Random.Range(0f, 1f) < 0.5f)
             {
                 // Spawn the enemy on a random tile at the top of the grid
                 randomStartCoords = new Vector2Int(gridHeight - 1, i);
                 randomTile = grid[randomStartCoords.x, randomStartCoords.y];
-                GameObject enemy = Instantiate(enemyPrefabs[0], randomTile.transform.position, Quaternion.identity);
+                GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], randomTile.transform.position, Quaternion.identity);
                 enemy.GetComponent<Enemy>().currentTileCoords = randomStartCoords;
                 enemy.GetComponent<Enemy>().player = player;
                 randomTile.GetComponent<Tile>().occupant = enemy;
