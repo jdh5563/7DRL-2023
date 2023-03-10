@@ -39,8 +39,11 @@ public class CreateGrid : MonoBehaviour
 
     public void ResetGrid()
     {
-        // Create the grid
-        for (int i = 0; i < gridHeight; i++)
+		gridWidth = Random.Range(5, 10);
+		gridHeight = Random.Range(5, 10);
+
+		// Create the grid
+		for (int i = 0; i < gridHeight; i++)
         {
             for (int j = 0; j < gridWidth; j++)
             {
@@ -56,6 +59,7 @@ public class CreateGrid : MonoBehaviour
         }
 
         // Spawn the player on a random tile at the bottom of the grid
+        bool northSouth = Random.Range(0f, 1f) < 0.5f;
         Vector2Int randomStartCoords = new Vector2Int(0, Random.Range(0, gridWidth));
         GameObject randomTile = grid[randomStartCoords.x, randomStartCoords.y];
         GameObject player = Instantiate(playerPrefab, randomTile.transform.position, Quaternion.identity);
