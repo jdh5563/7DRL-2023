@@ -46,6 +46,8 @@ public class DiagonalEnemy : Enemy
 			else
 			{
 				moveVertical = Random.Range(0f, 1f) < 0.5f ? 1 : -1;
+
+				if (!CreateGrid.IsValidTile(currentTileCoords.x + moveVertical, currentTileCoords.y + moveHorizontal)) moveVertical *= -1;
 			}
 
 			GameObject chosenTile = CreateGrid.grid[currentTileCoords.x + moveVertical, currentTileCoords.y + moveHorizontal];
@@ -77,6 +79,8 @@ public class DiagonalEnemy : Enemy
 			else
 			{
 				moveHorizontal = Random.Range(0f, 1f) < 0.5f ? 1 : -1;
+
+				if (!CreateGrid.IsValidTile(currentTileCoords.x + moveVertical, currentTileCoords.y + moveHorizontal)) moveHorizontal *= -1;
 			}
 
 			GameObject chosenTile = CreateGrid.grid[currentTileCoords.x + moveVertical, currentTileCoords.y + moveHorizontal];
