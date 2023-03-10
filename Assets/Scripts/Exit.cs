@@ -31,7 +31,7 @@ public class Exit : MonoBehaviour
             gameManager.GetComponent<CreateGrid>().ResetGrid();
         }
 
-        if (lever.GetComponent<Lever>().active || button.GetComponent<Button>().active)
+        if ((lever == null && button == null) || (lever != null && lever.GetComponent<Lever>().active) || (button != null && button.GetComponent<Button>().active))
         {
             open = 2;
         }

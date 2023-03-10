@@ -54,7 +54,7 @@ public class MoveOnGrid : MonoBehaviour
 		// If it is the player's turn, move to the chosen tile
 		GameObject tile;
 
-		if (!isMoving && !block.GetComponent<Block>().isMoving)
+		if (!isMoving && (block == null || !block.GetComponent<Block>().isMoving))
 		{
 			if (Input.GetAxisRaw("Horizontal") != 0 && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")))
 			{

@@ -65,7 +65,6 @@ public class TurnOrder : MonoBehaviour
             }
 
 			if (exit.open - 1 >= 0) exit.open--;
-            Debug.Log(exit.open);
 		}
         else
         {
