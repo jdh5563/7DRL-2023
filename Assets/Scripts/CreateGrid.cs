@@ -59,12 +59,14 @@ public class CreateGrid : MonoBehaviour
 		}
 
 		level++;
-        maxDifficulty = level * 5 + 20;
+        maxDifficulty = level * 2 + 15;
+
+        Debug.Log("Max Difficulty: " + maxDifficulty);
 
 		// Choose a number of each type of entity allowed in the level so their total adds up to maxDifficulty
 		// 1. Enemy 2. Puzzle 3. Grid Dimensions
 		int currentDifficulty = 0;
-		int numEnemies = Random.Range(level, (level + 6) / 2);
+		int numEnemies = Random.Range(level + 3, level + 6);
         int[] numEnemiesOfType = new int[enemyPrefabs.Length];
 
         for(int i = 0; i < numEnemiesOfType.Length; i++)
@@ -76,34 +78,53 @@ public class CreateGrid : MonoBehaviour
             if (numEnemies == 0) break;
         }
 
-        if (currentDifficulty == 0)
+        if (numEnemies != 0)
         {
-            numEnemiesOfType[0] = 1;
-            currentDifficulty += enemyDifficultyLevels[0];
+            numEnemiesOfType[0] += numEnemies;
+            currentDifficulty += numEnemies * enemyDifficultyLevels[0];
         }
 
         Debug.Log("Enemy Difficulty: " + currentDifficulty);
 
-		bool hasPuzzle = Random.Range(0f, 1f) < 0.75f;
-		bool blockPuzzle = Random.Range(0f, 1f) < 0.5f;
+		//bool hasPuzzle = Random.Range(0f, 1f) < 0.75f;
+		//bool blockPuzzle = Random.Range(0f, 1f) < 0.5f;
 
-		if (hasPuzzle)
+		//if (hasPuzzle)
+  //      {
+  //          if (blockPuzzle)
+  //          {
+  //              currentDifficulty += 6;
+		//		Debug.Log("Puzzle Difficulty: " + 6);
+		//	}
+  //          else
+  //          {
+  //              currentDifficulty += 3;
+		//		Debug.Log("Puzzle Difficulty: " + 3);
+		//	}
+		//}
+
+        int x = maxDifficulty - currentDifficulty;
+		gridWidth = 5;
+		gridHeight = 5;
+
+		if (x < 0)
         {
-            if (blockPuzzle)
+            for(int i = 0; i < -x; i++)
             {
-                currentDifficulty += 6;
-				Debug.Log("Puzzle Difficulty: " + 6);
-			}
-            else
-            {
-                currentDifficulty += 3;
-				Debug.Log("Puzzle Difficulty: " + 3);
-			}
-		}
+                if(Random.Range(0f, 1f) < 0.5f)
+                {
+                    gridWidth += 1;
+                }
+                else
+                {
+                    gridHeight += 1;
+                }
+            }
+        }
 
-		gridWidth = Random.Range((maxDifficulty - currentDifficulty) / 2, maxDifficulty - currentDifficulty - 5);
-        currentDifficulty += gridWidth;
-		gridHeight = maxDifficulty - currentDifficulty;
+		//gridWidth = Random.Range((maxDifficulty - currentDifficulty) / 2, maxDifficulty - currentDifficulty - 5);
+  //      currentDifficulty += gridWidth;
+		//gridHeight = maxDifficulty - currentDifficulty;
 
 		Debug.Log("Grid Difficulty: (X: " + gridWidth + ", Y: " + gridHeight + ")");
 
@@ -136,43 +157,43 @@ public class CreateGrid : MonoBehaviour
 		randomTile.GetComponent<Tile>().type = exit;
 		TurnOrder.exit = exit.GetComponent<Exit>();
 
-        if (hasPuzzle)
-        {
-            if (blockPuzzle)
-            {
-                // Spawn a block on the second row not on the rim
-                randomStartCoords = new Vector2Int(1, Random.Range(1, gridWidth - 2));
-                randomTile = grid[randomStartCoords.x, randomStartCoords.y];
-                GameObject block = Instantiate(blockPrefab, randomTile.transform.position, Quaternion.identity);
-                block.GetComponent<Block>().currentTileCoords = randomStartCoords;
-                player.GetComponent<MoveOnGrid>().block = block;
-                randomTile.GetComponent<Tile>().occupant = block;
+        //if (hasPuzzle)
+        //{
+        //    if (blockPuzzle)
+        //    {
+        //        // Spawn a block on the second row not on the rim
+        //        randomStartCoords = new Vector2Int(1, Random.Range(1, gridWidth - 2));
+        //        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        //        GameObject block = Instantiate(blockPrefab, randomTile.transform.position, Quaternion.identity);
+        //        block.GetComponent<Block>().currentTileCoords = randomStartCoords;
+        //        player.GetComponent<MoveOnGrid>().block = block;
+        //        randomTile.GetComponent<Tile>().occupant = block;
 
-                // Spawn a button in a random location not on the rim or on the exit
-                do
-                {
-                    randomStartCoords = new Vector2Int(Random.Range(1, gridHeight - 2), Random.Range(1, gridWidth - 2));
-                } while (grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().type == exit);
-                randomTile = grid[randomStartCoords.x, randomStartCoords.y];
-                GameObject button = Instantiate(buttonPrefab, randomTile.transform.position, Quaternion.identity);
-                button.GetComponent<Button>().tileCoords = randomStartCoords;
-                randomTile.GetComponent<Tile>().type = button;
-                exit.GetComponent<Exit>().button = button;
-            }
-            else
-            {
-                // Spawn a lever in a random location not on the exit
-                do
-                {
-                    randomStartCoords = new Vector2Int(Random.Range(0, gridHeight - 1), Random.Range(0, gridWidth - 1));
-                } while (grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().type == exit);
-                randomTile = grid[randomStartCoords.x, randomStartCoords.y];
-                GameObject lever = Instantiate(leverPrefab, randomTile.transform.position, Quaternion.identity);
-                lever.GetComponent<Lever>().tileCoords = randomStartCoords;
-                randomTile.GetComponent<Tile>().type = lever;
-                exit.GetComponent<Exit>().lever = lever;
-            }
-        }
+        //        // Spawn a button in a random location not on the rim or on the exit
+        //        do
+        //        {
+        //            randomStartCoords = new Vector2Int(Random.Range(1, gridHeight - 2), Random.Range(1, gridWidth - 2));
+        //        } while (grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().type == exit);
+        //        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        //        GameObject button = Instantiate(buttonPrefab, randomTile.transform.position, Quaternion.identity);
+        //        button.GetComponent<Button>().tileCoords = randomStartCoords;
+        //        randomTile.GetComponent<Tile>().type = button;
+        //        exit.GetComponent<Exit>().button = button;
+        //    }
+        //    else
+        //    {
+        //        // Spawn a lever in a random location not on the exit
+        //        do
+        //        {
+        //            randomStartCoords = new Vector2Int(Random.Range(0, gridHeight - 1), Random.Range(0, gridWidth - 1));
+        //        } while (grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().type == exit);
+        //        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        //        GameObject lever = Instantiate(leverPrefab, randomTile.transform.position, Quaternion.identity);
+        //        lever.GetComponent<Lever>().tileCoords = randomStartCoords;
+        //        randomTile.GetComponent<Tile>().type = lever;
+        //        exit.GetComponent<Exit>().lever = lever;
+        //    }
+        //}
 
 		for (int i = 0; i < numEnemiesOfType.Length; i++)
         {

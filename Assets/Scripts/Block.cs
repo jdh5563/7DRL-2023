@@ -32,8 +32,8 @@ public class Block : MonoBehaviour
 
             if (percentDone >= 1f)
             {
-                CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
-                CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+                //CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+                //CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 
                 transform.position = CreateGrid.grid[newTileCoords.x, newTileCoords.y].transform.position;
                 currentTileCoords = newTileCoords;
@@ -59,5 +59,8 @@ public class Block : MonoBehaviour
             newTileCoords.y = currentTileCoords.y + direction;
             isMoving = true;
         }
-    }
+
+		CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+		CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+	}
 }
