@@ -28,18 +28,14 @@ public class Player : MonoBehaviour
     /// <param name="damage">The amount of damage to receive</param>
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, int.MaxValue);
         Debug.Log(currentHealth);
 
         // Reset if the player died. Otherwise end the turn
-        if(currentHealth <= 0)
+        if(currentHealth == 0)
         {
 			TurnOrder.ResetTurnOrder();
 			gameManager.GetComponent<CreateGrid>().ResetGrid();
         }
-        //else
-        //{
-        //    TurnOrder.EndTurn();
-        //}
     }
 }

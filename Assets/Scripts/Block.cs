@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    
+
     public Vector2Int currentTileCoords;
     private Vector2Int newTileCoords;
     public bool isMoving = false;

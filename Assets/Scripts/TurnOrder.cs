@@ -7,6 +7,7 @@ public class TurnOrder : MonoBehaviour
 {
     public static List<GameObject> turnOrder = new List<GameObject>();
     public static Exit exit;
+    public static bool reset = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,11 @@ public class TurnOrder : MonoBehaviour
         {
             for (int i = 1; i < turnOrder.Count; i++)
             {
+                if(reset)
+                {
+                    reset = false;
+                    break;
+                }
                 if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0 && !exit.IsExiting())
                 {
                     turnOrder[i].GetComponent<Enemy>().TakeAction();
@@ -67,9 +73,8 @@ public class TurnOrder : MonoBehaviour
                     turnOrder[i].GetComponent<Enemy>().turnTimer--;
                 }
             }
-
-			exit.open--;
-		}
+		if (!exit.OpenExit())   exit.open--;
+        }
         else
         {
 			obj.GetComponent<Enemy>().turnTimer = obj.GetComponent<Enemy>().maxTimer;
@@ -81,6 +86,7 @@ public class TurnOrder : MonoBehaviour
     /// </summary>
     public static void ResetTurnOrder()
     {
+        reset = true;
         while(turnOrder.Count > 0)
         {
             GameObject entity = turnOrder[0];

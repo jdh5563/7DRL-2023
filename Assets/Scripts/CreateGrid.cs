@@ -7,6 +7,8 @@ public class CreateGrid : MonoBehaviour
     // Prefabs to instantiate
     [SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject blockPrefab;
+    [SerializeField] private GameObject blockSpawnPointPrefab;
+    [SerializeField] private GameObject blockRespawnerPrefab;
 	[SerializeField] private GameObject buttonPrefab;
     [SerializeField] private GameObject leverPrefab;
     [SerializeField] private GameObject[] enemyPrefabs;
@@ -39,8 +41,6 @@ public class CreateGrid : MonoBehaviour
 
     public void ResetGrid()
     {
-		//gridWidth = Random.Range(5, 10);
-		//gridHeight = Random.Range(5, 10);
 
 		// Create the grid
 		for (int i = 0; i < gridHeight; i++)
@@ -59,8 +59,6 @@ public class CreateGrid : MonoBehaviour
         }
 
         // Spawn the player on a random tile at the bottom of the grid
-        //bool northSouth = Random.Range(0f, 1f) < 0.5f;
-        //Vector2Int randomStartCoords = northSouth ? new Vector2Int(0, Random.Range(0, gridWidth)) : new Vector2Int(Random.Range(0, gridHeight), 0);
         Vector2Int randomStartCoords = new Vector2Int(0, Random.Range(0, gridWidth));
 		GameObject randomTile = grid[randomStartCoords.x, randomStartCoords.y];
         GameObject player = Instantiate(playerPrefab, randomTile.transform.position, Quaternion.identity);
@@ -91,6 +89,21 @@ public class CreateGrid : MonoBehaviour
         block.GetComponent<Block>().currentTileCoords = randomStartCoords;
         player.GetComponent<MoveOnGrid>().block = block;
         randomTile.GetComponent<Tile>().occupant = block;
+
+        // Sets the block's spawn point
+        GameObject blockSpawnPoint = Instantiate(blockSpawnPointPrefab, randomTile.transform.position, Quaternion.identity);
+        blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords = randomStartCoords;
+        randomTile.GetComponent<Tile>().type = blockSpawnPoint;
+
+        // Spawn a block respawner not on the rim and not cardinally adjacent with block's starting position
+        /*while (blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords == randomStartCoords || blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords.x == randomStartCoords.x + 1
+            || blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords.x == randomStartCoords.x - 1 || blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords.y == randomStartCoords.y + 1
+            || blockSpawnPoint.GetComponent<BlockSpawnPoint>().tileCoords.y == randomStartCoords.y - 1)*/ randomStartCoords = new Vector2Int(Random.Range(1, gridHeight - 2), Random.Range(1, gridWidth - 2));
+        randomTile = grid[randomStartCoords.x, randomStartCoords.y];
+        GameObject blockRespawner = Instantiate(blockRespawnerPrefab, randomTile.transform.position, Quaternion.identity);
+        blockRespawner.GetComponent<BlockRespawner>().tileCoords = randomStartCoords;
+        blockRespawner.GetComponent<BlockRespawner>().block = block;
+        randomTile.GetComponent<Tile>().type = blockRespawner;
 
         // Spawn a button in a random location not on the rim
         randomStartCoords = new Vector2Int(Random.Range(1, gridHeight - 2), Random.Range(1, gridWidth - 2));

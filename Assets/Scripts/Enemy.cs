@@ -35,7 +35,10 @@ public abstract class Enemy : MonoBehaviour
 
 			if (percentDone >= 1f)
 			{
-				transform.position = CreateGrid.grid[newTileCoords.x, newTileCoords.y].transform.position;
+                //CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+                //CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+
+                transform.position = CreateGrid.grid[newTileCoords.x, newTileCoords.y].transform.position;
 				currentTileCoords = newTileCoords;
 				percentDone = 0.05f;
 				isMoving = false;

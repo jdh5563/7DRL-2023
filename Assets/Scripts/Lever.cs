@@ -14,13 +14,17 @@ public class Lever : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        FlipLever();
     }
 
     // Update is called once per frame
     void Update()
     {
+        FlipLever();
+    }
 
+    private void FlipLever()
+    {
         GameObject tile = CreateGrid.grid[tileCoords.x, tileCoords.y];
 
         if (tile.GetComponent<Tile>().occupant != null && !justFlipped)
