@@ -246,9 +246,10 @@ MonoBehaviour:
   - {fileID: 4913063050989244143, guid: 6dd251aaf8f9ec047b2731fc4d5eec83, type: 3}
   - {fileID: 1029624131499318761, guid: 99b4edbd4a0c2f54aac8351b4c7a44f5, type: 3}
   - {fileID: 7785237688706273367, guid: a6602b1e4ecbf0f4d8bde191ccbc8329, type: 3}
+  - {fileID: 9076528529484762310, guid: 620d5eb1ff2d00f438b1b61c00ffb25c, type: 3}
   tilePrefab: {fileID: 6466291653740598643, guid: 8115bfd16b2615e48b633e24bd0e20e3, type: 3}
   exitPrefab: {fileID: 5462829753431274685, guid: 879ef97f079dafb4793087a29ac789b2, type: 3}
-  enemyDifficultyLevels: 02000000050000000300000008000000
+  enemyDifficultyLevels: 020000000500000003000000080000000e000000
 --- !u!4 &845022446
 Transform:
   m_ObjectHideFlags: 0
