@@ -37,8 +37,8 @@ public class MoveOnGrid : MonoBehaviour
 
             if(percentDone >= 1f)
             {
-				CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
-				CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+				//CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
+				//CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 
 				transform.position = endPosition;
                 basePosition = endPosition;
@@ -54,7 +54,7 @@ public class MoveOnGrid : MonoBehaviour
 		// If it is the player's turn, move to the chosen tile
 		GameObject tile;
 
-		if (!isMoving && !block.GetComponent<Block>().isMoving)
+		if (!isMoving && (block == null || !block.GetComponent<Block>().isMoving))
 		{
 			if (Input.GetAxisRaw("Horizontal") != 0 && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")))
 			{
@@ -66,7 +66,9 @@ public class MoveOnGrid : MonoBehaviour
 					endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
-                }
+					CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+				}
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
 				{
 					block.GetComponent<Block>().Move(0, (int)Input.GetAxisRaw("Horizontal"), gameObject);
@@ -82,7 +84,8 @@ public class MoveOnGrid : MonoBehaviour
 					endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
-
+					CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 				}
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 				{

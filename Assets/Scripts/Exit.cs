@@ -41,7 +41,7 @@ public class Exit : MonoBehaviour
     {
         GameObject tile = CreateGrid.grid[tileCoords.x, tileCoords.y];
 
-        if (tile.GetComponent<Tile>().occupant != null && tile.GetComponent<Tile>().occupant.tag == "Player" && open > 0)
+        if (tile.GetComponent<Tile>().occupant != null && tile.GetComponent<Tile>().occupant.tag == "Player" && !tile.GetComponent<Tile>().occupant.GetComponent<MoveOnGrid>().isMoving && open > 0)
         {
             TurnOrder.ResetTurnOrder();
             gameManager.GetComponent<CreateGrid>().ResetGrid();
