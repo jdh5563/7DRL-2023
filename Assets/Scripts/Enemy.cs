@@ -35,7 +35,7 @@ public abstract class Enemy : MonoBehaviour
 
 			if (percentDone >= 1f)
 			{
-				transform.position = CreateGrid.grid[newTileCoords.x, newTileCoords.y].transform.position;
+                transform.position = CreateGrid.grid[newTileCoords.x, newTileCoords.y].transform.position;
 				currentTileCoords = newTileCoords;
 				percentDone = 0.05f;
 				isMoving = false;

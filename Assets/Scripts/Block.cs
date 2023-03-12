@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    
+
     public Vector2Int currentTileCoords;
     private Vector2Int newTileCoords;
     public bool isMoving = false;
@@ -45,19 +45,13 @@ public class Block : MonoBehaviour
     }
 
     // Moves the block based on the direction it was pushed
-    public void Move(int direction, bool vertical, GameObject _pusher)
+    public void Move(int vertDirection, int horDirection, GameObject _pusher)
     {
         pusher = _pusher;
         newTileCoords = currentTileCoords;
-        if (vertical)
-        {
-            newTileCoords.x = currentTileCoords.x + direction;
-            isMoving = true;
-        }
-        else
-        {
-            newTileCoords.y = currentTileCoords.y + direction;
-            isMoving = true;
-        }
+
+        newTileCoords.x = currentTileCoords.x + vertDirection;
+        newTileCoords.y = currentTileCoords.y + horDirection;
+        isMoving = true;
     }
 }

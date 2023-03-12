@@ -6,7 +6,7 @@ public class MoveOnGrid : MonoBehaviour
 {
     private Vector2 basePosition;
     private Vector2 endPosition;
-    private bool isMoving = false;
+    public bool isMoving = false;
     private float percentDone = 0.05f;
 
     public GameObject block = null;
@@ -66,11 +66,11 @@ public class MoveOnGrid : MonoBehaviour
 					endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
-				}
+                }
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
 				{
-					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Horizontal"), false, gameObject);
-				}
+					block.GetComponent<Block>().Move(0, (int)Input.GetAxisRaw("Horizontal"), gameObject);
+                }
 			}
 			else if (Input.GetAxisRaw("Vertical") != 0 && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y))
 			{
@@ -82,11 +82,12 @@ public class MoveOnGrid : MonoBehaviour
 					endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
+
 				}
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 				{
-					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), true, gameObject);
-				}
+					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), 0, gameObject);
+                }
 			}
 		}
 	}

@@ -239,10 +239,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 8646889913862792733, guid: fde650b18a7ff274aa199f262ddaba05, type: 3}
   blockPrefab: {fileID: 8646889913862792733, guid: 10aa36fc46dff9f499b3b84ab15f1a49, type: 3}
+  blockSpawnPointPrefab: {fileID: 6644696843125839403, guid: 2187c3ba5829bb841ae21647a5256b06, type: 3}
+  blockRespawnerPrefab: {fileID: 7060454310694132491, guid: f6ab62b798fafef448fa499d2afb4e04, type: 3}
   buttonPrefab: {fileID: 8646889913862792733, guid: 3f16d9d1c6d5cc24ea835c0e15d8274d, type: 3}
   leverPrefab: {fileID: 7079490945748229388, guid: d88409f897de8694b815736925420d6a, type: 3}
   enemyPrefabs:
   - {fileID: 1916268950080239007, guid: e2c84bb419675494bb40e2e0fc47688e, type: 3}
+  - {fileID: 4913063050989244143, guid: 6dd251aaf8f9ec047b2731fc4d5eec83, type: 3}
   - {fileID: 2034278694138142882, guid: 5c2291e7fa7f58a489b436ac82867913, type: 3}
   tilePrefab: {fileID: 6466291653740598643, guid: 8115bfd16b2615e48b633e24bd0e20e3, type: 3}
   exitPrefab: {fileID: 5462829753431274685, guid: 879ef97f079dafb4793087a29ac789b2, type: 3}

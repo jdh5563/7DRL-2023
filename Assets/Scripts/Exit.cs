@@ -17,24 +17,55 @@ public class Exit : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager");
+
+        OpenExit();
+        DoorSpriteManager();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        IsExiting();
+        OpenExit();
+        DoorSpriteManager();
+
+    }
+
+    private void FixedUpdate()
+    {
+        
+    }
+
+    public bool IsExiting()
+    {
         GameObject tile = CreateGrid.grid[tileCoords.x, tileCoords.y];
 
         if (tile.GetComponent<Tile>().occupant != null && tile.GetComponent<Tile>().occupant.tag == "Player" && open > 0)
         {
             TurnOrder.ResetTurnOrder();
             gameManager.GetComponent<CreateGrid>().ResetGrid();
+            return true;
         }
 
-        if (lever.GetComponent<Lever>().active || button.GetComponent<Button>().active)
+        else return false;
+    }
+
+    public bool OpenExit()
+    {
+        if ((lever == null && button == null) || (lever != null && lever.GetComponent<Lever>().active) || (button != null && button.GetComponent<Button>().active))
         {
             open = 2;
+            return true;
         }
 
+        return false;
+    }
+
+    private void DoorSpriteManager()
+    {
+        if (open <= 0) GetComponent<SpriteRenderer>().color = new Color(.1686275f, .6313726f, .5529412f, 1);
+        else if (open == 2) GetComponent<SpriteRenderer>().color = new Color(.007843138f, .8627451f, 1, 1);
+        else if (open == 1) GetComponent<SpriteRenderer>().color = new Color(.9294118f, 1, .003921569f, 1);
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TurnOrder : MonoBehaviour
 {
     public static List<GameObject> turnOrder = new List<GameObject>();
     public static Exit exit;
+    public static bool reset = false;
 
     // Start is called before the first frame update
     void Start()
@@ -16,15 +18,23 @@ public class TurnOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
 		if (IsPlayerTurn())
 		{
             turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();
-		}
+        }
         else
         {
             for (int i = 1; i < turnOrder.Count; i++)
             {
-                if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0)
+                if(reset)
+                {
+                    reset = false;
+                    break;
+                }
+                if (turnOrder[i].GetComponent<Enemy>().turnTimer == 0 && !exit.IsExiting())
                 {
                     turnOrder[i].GetComponent<Enemy>().TakeAction();
 				}
@@ -63,10 +73,8 @@ public class TurnOrder : MonoBehaviour
                     turnOrder[i].GetComponent<Enemy>().turnTimer--;
                 }
             }
-
-			if (exit.open - 1 >= 0) exit.open--;
-            Debug.Log(exit.open);
-		}
+		if (!exit.OpenExit())   exit.open--;
+        }
         else
         {
 			obj.GetComponent<Enemy>().turnTimer = obj.GetComponent<Enemy>().maxTimer;
@@ -78,6 +86,7 @@ public class TurnOrder : MonoBehaviour
     /// </summary>
     public static void ResetTurnOrder()
     {
+        reset = true;
         while(turnOrder.Count > 0)
         {
             GameObject entity = turnOrder[0];

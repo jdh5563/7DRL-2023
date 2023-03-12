@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StationaryCardinalEnemy : Enemy
 {
+
+    private bool shotPrepared = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +32,9 @@ public class StationaryCardinalEnemy : Enemy
 
     protected override bool IsPlayerInRange()
     {
+
         Vector2Int playerPos = player.GetComponent<MoveOnGrid>().currentTileCoords;
+
         return (playerPos.x == currentTileCoords.x || playerPos.y == currentTileCoords.y);
     }
 
