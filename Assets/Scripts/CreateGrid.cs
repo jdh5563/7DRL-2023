@@ -208,8 +208,8 @@ public class CreateGrid : MonoBehaviour
                 switch (enemyPrefabs[i].name)
                 {
                     case "MinotaurEnemy":
-						if (randomStartCoords.x == gridHeight) randomStartCoords.x--;
-						if (randomStartCoords.y == gridWidth) randomStartCoords.y--;
+						if (randomStartCoords.x == gridHeight - 1) randomStartCoords.x--;
+						if (randomStartCoords.y == gridWidth - 1) randomStartCoords.y--;
                         break;
                 }
 
@@ -225,6 +225,7 @@ public class CreateGrid : MonoBehaviour
 						grid[randomStartCoords.x + 1, randomStartCoords.y].GetComponent<Tile>().occupant = enemy;
 						grid[randomStartCoords.x, randomStartCoords.y + 1].GetComponent<Tile>().occupant = enemy;
 						grid[randomStartCoords.x + 1, randomStartCoords.y + 1].GetComponent<Tile>().occupant = enemy;
+                        enemy.transform.position = new Vector2(enemy.transform.position.x + 0.5f, enemy.transform.position.y + 0.5f);
 						break;
 				}
 

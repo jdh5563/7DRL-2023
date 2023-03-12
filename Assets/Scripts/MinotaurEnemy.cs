@@ -15,6 +15,9 @@ public class MinotaurEnemy : Enemy
 	protected override void FixedUpdate()
 	{
 		base.FixedUpdate();
+
+		// Fix any error in positioning from movement lerp
+		if(isMoving || transform.position.x != (int)transform.position.x) transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
 	}
 
 	protected override void Attack()
@@ -25,7 +28,7 @@ public class MinotaurEnemy : Enemy
 
 	protected override bool IsPlayerInRange()
 	{
-		throw new System.NotImplementedException();
+		return false;
 	}
 
 	protected override void Move()
@@ -40,35 +43,57 @@ public class MinotaurEnemy : Enemy
 
 			if (move == 1)
 			{
-				GameObject rightTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1];
-				if (rightTile.GetComponent<Tile>().IsUnoccupied())
+				GameObject rightLowTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 2];
+				GameObject rightHighTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y + 2];
+				if (rightLowTile.GetComponent<Tile>().IsUnoccupied() && rightHighTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.y += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
-					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y + 1].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[newTileCoords.x + 1, newTileCoords.y + 1].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
-				else if (rightTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 2].GetComponent<Tile>().IsUnoccupied())
+				else
 				{
-					rightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					if (rightLowTile.GetComponent<Tile>().occupant != null && rightLowTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + 3) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 3].GetComponent<Tile>().IsUnoccupied())
+					{
+						rightLowTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+					else if (rightHighTile.GetComponent<Tile>().occupant != null && rightHighTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 1, currentTileCoords.y + 3) && CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y + 3].GetComponent<Tile>().IsUnoccupied())
+					{
+						rightHighTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+
 					return;
 				}
 			}
 			else if (move == -1)
 			{
-				GameObject leftTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 1];
-				if (leftTile.GetComponent<Tile>().IsUnoccupied())
+				GameObject leftLowTile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 1];
+				GameObject leftHighTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y - 1];
+				if (leftLowTile.GetComponent<Tile>().IsUnoccupied() && leftHighTile.GetComponent<Tile>().IsUnoccupied())
 				{
 					newTileCoords.y += move;
 					isMoving = true;
-					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[newTileCoords.x + 1, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
-				else if (leftTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y - 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y - 2].GetComponent<Tile>().IsUnoccupied())
+				else
 				{
-					leftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, false, gameObject);
+					if (leftLowTile.GetComponent<Tile>().occupant != null && leftLowTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y - 2) && CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y - 2].GetComponent<Tile>().IsUnoccupied())
+					{
+						leftLowTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+					else if (leftHighTile.GetComponent<Tile>().occupant != null && leftHighTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 1, currentTileCoords.y - 2) && CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y - 2].GetComponent<Tile>().IsUnoccupied())
+					{
+						leftHighTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+
 					return;
 				}
 			}
@@ -81,35 +106,57 @@ public class MinotaurEnemy : Enemy
 
 			if (move == 1)
 			{
-				GameObject upTile = CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y];
-				if (upTile.GetComponent<Tile>().IsUnoccupied())
+				GameObject upLeftTile = CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y];
+				GameObject upRightTile = CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y + 1];
+				if (upLeftTile.GetComponent<Tile>().IsUnoccupied() && upRightTile.GetComponent<Tile>().IsUnoccupied())
 				{
-					newTileCoords.x += move;
+					newTileCoords.y += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
-					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[newTileCoords.x + 1, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[newTileCoords.x + 1, newTileCoords.y + 1].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
-				else if (upTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+				else
 				{
-					upTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, true, gameObject);
+					if (upLeftTile.GetComponent<Tile>().occupant != null && upLeftTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 3, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + 3, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+					{
+						upLeftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+					else if (upRightTile.GetComponent<Tile>().occupant != null && upRightTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + 3, currentTileCoords.y + 1) && CreateGrid.grid[currentTileCoords.x + 3, currentTileCoords.y + 1].GetComponent<Tile>().IsUnoccupied())
+					{
+						upRightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+
 					return;
 				}
 			}
 			else if (move == -1)
 			{
-				GameObject downTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y];
-				if (downTile.GetComponent<Tile>().IsUnoccupied())
+				GameObject downLeftTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y];
+				GameObject downRightTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y + 1];
+				if (downLeftTile.GetComponent<Tile>().IsUnoccupied() && downRightTile.GetComponent<Tile>().IsUnoccupied())
 				{
-					newTileCoords.x += move;
+					newTileCoords.y += move;
 					isMoving = true;
-					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[newTileCoords.x, newTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					CreateGrid.grid[newTileCoords.x, newTileCoords.y + 1].GetComponent<Tile>().occupant = gameObject;
 					return;
 				}
-				else if (downTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x - 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x - 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+				else
 				{
-					downTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(-1, true, gameObject);
+					if (downLeftTile.GetComponent<Tile>().occupant != null && downLeftTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x - 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x - 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
+					{
+						downLeftTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+					else if (downRightTile.GetComponent<Tile>().occupant != null && downRightTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x - 2, currentTileCoords.y + 1) && CreateGrid.grid[currentTileCoords.x - 2, currentTileCoords.y + 1].GetComponent<Tile>().IsUnoccupied())
+					{
+						downRightTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+					}
+
 					return;
 				}
 			}
