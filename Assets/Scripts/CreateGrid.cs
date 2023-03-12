@@ -59,7 +59,7 @@ public class CreateGrid : MonoBehaviour
 		}
 
 		level++;
-        maxDifficulty = level * 2 + 15;
+        maxDifficulty = level * 3 + 20;
 
         Debug.Log("Max Difficulty: " + maxDifficulty);
 
@@ -123,7 +123,7 @@ public class CreateGrid : MonoBehaviour
         }
 
 		//gridWidth = Random.Range((maxDifficulty - currentDifficulty) / 2, maxDifficulty - currentDifficulty - 5);
-  //      currentDifficulty += gridWidth;
+		//      currentDifficulty += gridWidth;
 		//gridHeight = maxDifficulty - currentDifficulty;
 
 		Debug.Log("Grid Difficulty: (X: " + gridWidth + ", Y: " + gridHeight + ")");
