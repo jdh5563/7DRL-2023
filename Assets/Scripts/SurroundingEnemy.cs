@@ -57,7 +57,7 @@ public class SurroundingEnemy : Enemy
 		}
 		else if (chosenTile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + moveVertical * 2, currentTileCoords.y + moveHorizontal * 2) && CreateGrid.grid[currentTileCoords.x + moveVertical * 2, currentTileCoords.y + moveHorizontal * 2].GetComponent<Tile>().IsUnoccupied())
 		{
-			chosenTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(1, false, gameObject);
+			chosenTile.GetComponent<Tile>().occupant.GetComponent<Block>().Move(0, 1, gameObject);
 			return;
 		}
 

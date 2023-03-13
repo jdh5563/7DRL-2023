@@ -71,7 +71,7 @@ public class MoveOnGrid : MonoBehaviour
 				}
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2) && CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal") * 2].GetComponent<Tile>().IsUnoccupied())
 				{
-					block.GetComponent<Block>().Move(0, (int)Input.GetAxisRaw("Horizontal"), gameObject);
+					block.GetComponent<Block>().Move(0, 1, gameObject);
                 }
 			}
 			else if (Input.GetAxisRaw("Vertical") != 0 && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical"), currentTileCoords.y))
@@ -89,7 +89,7 @@ public class MoveOnGrid : MonoBehaviour
 				}
 				else if (tile.GetComponent<Tile>().occupant.tag == "Block" && CreateGrid.IsValidTile(currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y) && CreateGrid.grid[currentTileCoords.x + (int)Input.GetAxisRaw("Vertical") * 2, currentTileCoords.y].GetComponent<Tile>().IsUnoccupied())
 				{
-					block.GetComponent<Block>().Move((int)Input.GetAxisRaw("Vertical"), 0, gameObject);
+					block.GetComponent<Block>().Move(1, 0, gameObject);
                 }
 			}
 		}

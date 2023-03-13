@@ -7,8 +7,6 @@ public class CreateGrid : MonoBehaviour
     // Prefabs to instantiate
     [SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject blockPrefab;
-    [SerializeField] private GameObject blockSpawnPointPrefab;
-    [SerializeField] private GameObject blockRespawnerPrefab;
 	[SerializeField] private GameObject buttonPrefab;
     [SerializeField] private GameObject leverPrefab;
     [SerializeField] private GameObject[] enemyPrefabs;
