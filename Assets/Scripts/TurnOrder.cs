@@ -89,9 +89,7 @@ public class TurnOrder : MonoBehaviour
         reset = true;
         while(turnOrder.Count > 0)
         {
-            GameObject entity = turnOrder[0];
             turnOrder.RemoveAt(0);
-            Destroy(entity);
         }
     }
 }

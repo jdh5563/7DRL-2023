@@ -7,7 +7,7 @@ public class MinotaurEnemy : Enemy
 	// Start is called before the first frame update
 	void Start()
 	{
-		maxTimer = 1;
+		maxTimer = 6;
 		turnTimer = maxTimer;
 	}
 
@@ -17,7 +17,14 @@ public class MinotaurEnemy : Enemy
 		base.FixedUpdate();
 
 		// Fix any error in positioning from movement lerp
-		if(isMoving || transform.position.x != (int)transform.position.x) transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
+		if (!isMoving)
+		{
+			transform.position = new Vector2(CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].transform.position.x + 0.5f, CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].transform.position.y + 0.5f);
+		}
+		else
+		{
+			transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
+		}
 	}
 
 	protected override void Attack()
@@ -28,7 +35,9 @@ public class MinotaurEnemy : Enemy
 
 	protected override bool IsPlayerInRange()
 	{
-		return false;
+		Vector2Int playerPos = player.GetComponent<MoveOnGrid>().currentTileCoords;
+		return (playerPos.y - currentTileCoords.y > -1 && playerPos.y - currentTileCoords.y < 2 && (playerPos.x - currentTileCoords.x == -1 || playerPos.x - currentTileCoords.x == 2)) ||
+			(playerPos.x - currentTileCoords.x > -1 && playerPos.x - currentTileCoords.x < 2 && (playerPos.y - currentTileCoords.y == -1 || playerPos.y - currentTileCoords.y == 2));
 	}
 
 	protected override void Move()
@@ -110,7 +119,7 @@ public class MinotaurEnemy : Enemy
 				GameObject upRightTile = CreateGrid.grid[currentTileCoords.x + 2, currentTileCoords.y + 1];
 				if (upLeftTile.GetComponent<Tile>().IsUnoccupied() && upRightTile.GetComponent<Tile>().IsUnoccupied())
 				{
-					newTileCoords.y += move;
+					newTileCoords.x += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;
@@ -138,7 +147,7 @@ public class MinotaurEnemy : Enemy
 				GameObject downRightTile = CreateGrid.grid[currentTileCoords.x - 1, currentTileCoords.y + 1];
 				if (downLeftTile.GetComponent<Tile>().IsUnoccupied() && downRightTile.GetComponent<Tile>().IsUnoccupied())
 				{
-					newTileCoords.y += move;
+					newTileCoords.x += move;
 					isMoving = true;
 					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y].GetComponent<Tile>().occupant = null;
 					CreateGrid.grid[currentTileCoords.x + 1, currentTileCoords.y + 1].GetComponent<Tile>().occupant = null;

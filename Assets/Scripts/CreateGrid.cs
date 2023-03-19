@@ -203,15 +203,12 @@ public class CreateGrid : MonoBehaviour
                 do
                 {
                     randomStartCoords = new Vector2Int(Random.Range(0, gridHeight), Random.Range(0, gridWidth));
-                } while (grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().occupant != null);
-
-                switch (enemyPrefabs[i].name)
-                {
-                    case "MinotaurEnemy":
-						if (randomStartCoords.x == gridHeight - 1) randomStartCoords.x--;
-						if (randomStartCoords.y == gridWidth - 1) randomStartCoords.y--;
-                        break;
-                }
+                } while (randomStartCoords.x == gridHeight - 1 ||
+					randomStartCoords.y == gridWidth - 1 ||
+                    grid[randomStartCoords.x, randomStartCoords.y].GetComponent<Tile>().occupant != null ||
+					grid[randomStartCoords.x + 1, randomStartCoords.y].GetComponent<Tile>().occupant != null ||
+					grid[randomStartCoords.x, randomStartCoords.y + 1].GetComponent<Tile>().occupant != null ||
+					grid[randomStartCoords.x + 1, randomStartCoords.y + 1].GetComponent<Tile>().occupant != null);
 
                 randomTile = grid[randomStartCoords.x, randomStartCoords.y];
                 GameObject enemy = Instantiate(enemyPrefabs[i], randomTile.transform.position, Quaternion.identity);
