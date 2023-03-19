@@ -12,6 +12,7 @@ public abstract class Enemy : MonoBehaviour
 
 	public int maxTimer;
 	public int turnTimer;
+	public bool stunned = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -46,8 +47,14 @@ public abstract class Enemy : MonoBehaviour
 
 	public void TakeAction()
 	{
-		if (IsPlayerInRange()) Attack();
-		else if (!isMoving) Move();
+		if (stunned)
+		{
+			stunned = false;
+			TurnOrder.EndTurn(gameObject);
+		}
+
+		else if (IsPlayerInRange()) Attack();
+        else if (!isMoving) Move();
 	}
 
 	protected abstract void Move();

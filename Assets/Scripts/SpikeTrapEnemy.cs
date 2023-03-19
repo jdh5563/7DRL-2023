@@ -41,7 +41,7 @@ public class SpikeTrapEnemy : Enemy
 					}
 					else if (CreateGrid.grid[currentTileCoords.x + spikeDistances[i].x, currentTileCoords.y + spikeDistances[i].y].GetComponent<Tile>().occupant.tag == "Enemy")
 					{
-						CreateGrid.grid[currentTileCoords.x + spikeDistances[i].x, currentTileCoords.y + spikeDistances[i].y].GetComponent<Tile>().occupant.GetComponent<Enemy>().turnTimer++;
+						CreateGrid.grid[currentTileCoords.x + spikeDistances[i].x, currentTileCoords.y + spikeDistances[i].y].GetComponent<Tile>().occupant.GetComponent<Enemy>().stunned = true;
 					}
 				}
 			}
