@@ -101,3 +101,4 @@ MonoBehaviour:
   player: {fileID: 0}
   maxTimer: 0
   turnTimer: 0
+  stunned: 0

@@ -12,7 +12,7 @@ public class MoveOnGrid : MonoBehaviour
     public GameObject block = null;
 
     public Vector2Int currentTileCoords;
-    private Vector2Int oldTileCoords;
+    public Vector2Int oldTileCoords;
 
     // Start is called before the first frame update
     void Start()

@@ -97,3 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a214a9f82638ee49b17792034bb85a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTileCoords: {x: 0, y: 0}
+  player: {fileID: 0}
+  maxTimer: 0
+  turnTimer: 0
+  stunned: 0
