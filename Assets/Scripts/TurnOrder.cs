@@ -18,9 +18,6 @@ public class TurnOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-
 		if (IsPlayerTurn())
 		{
             turnOrder[0].GetComponent<MoveOnGrid>().TakeAction();

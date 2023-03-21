@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MoveOnGrid : MonoBehaviour
 {
-    private Vector2 basePosition;
-    private Vector2 endPosition;
     public bool isMoving = false;
     private float percentDone = 0.05f;
 
@@ -17,8 +15,7 @@ public class MoveOnGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        basePosition = transform.position;
-        endPosition = transform.position;
+
     }
 
     // Update is called once per frame
@@ -32,16 +29,12 @@ public class MoveOnGrid : MonoBehaviour
         // Move to the designated tile
 		if (isMoving)
         {
-            transform.position = Vector2.Lerp(basePosition, endPosition, percentDone);
+            transform.position = Vector2.Lerp(CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].transform.position, CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].transform.position, percentDone);
             percentDone += 0.05f;
 
             if(percentDone >= 1f)
             {
-				//CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
-				//CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
-
-				transform.position = endPosition;
-                basePosition = endPosition;
+				transform.position = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y].transform.position;
                 percentDone = 0.05f;
                 isMoving = false;
 				TurnOrder.EndTurn(gameObject);
@@ -63,7 +56,6 @@ public class MoveOnGrid : MonoBehaviour
 				if (tile.GetComponent<Tile>().IsUnoccupied())
 				{
 					isMoving = true;
-					endPosition = new Vector2(basePosition.x + Input.GetAxisRaw("Horizontal"), basePosition.y);
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.y += (int)Input.GetAxisRaw("Horizontal");
 					CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;
@@ -81,7 +73,6 @@ public class MoveOnGrid : MonoBehaviour
 				if (tile.GetComponent<Tile>().IsUnoccupied())
 				{
 					isMoving = true;
-					endPosition = new Vector2(basePosition.x, basePosition.y + Input.GetAxisRaw("Vertical"));
 					oldTileCoords = currentTileCoords;
 					currentTileCoords.x += (int)Input.GetAxisRaw("Vertical");
 					CreateGrid.grid[oldTileCoords.x, oldTileCoords.y].GetComponent<Tile>().occupant = null;

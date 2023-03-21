@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CloudEnemy : Enemy
 {
+	private bool isBlowing = false;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -15,21 +17,42 @@ public class CloudEnemy : Enemy
 	protected override void FixedUpdate()
 	{
 		base.FixedUpdate();
+
+		if (isBlowing) StartCoroutine(PushPlayer());
 	}
 
 	protected override void Attack()
 	{
 		// Move player
-		GameObject tile = CreateGrid.grid[currentTileCoords.x, currentTileCoords.y + (int)Input.GetAxisRaw("Horizontal")];
+		Vector2Int playerDirection = new Vector2Int(
+			player.GetComponent<MoveOnGrid>().currentTileCoords.x - currentTileCoords.x == 0 ? 0 : (int)Mathf.Sign(player.GetComponent<MoveOnGrid>().currentTileCoords.x - currentTileCoords.x),
+			player.GetComponent<MoveOnGrid>().currentTileCoords.y - currentTileCoords.y == 0 ? 0 : (int)Mathf.Sign(player.GetComponent<MoveOnGrid>().currentTileCoords.y - currentTileCoords.y));
 
-		if (tile.GetComponent<Tile>().IsUnoccupied())
+		if (CreateGrid.IsValidTile(player.GetComponent<MoveOnGrid>().currentTileCoords.x + playerDirection.x, player.GetComponent<MoveOnGrid>().currentTileCoords.y + playerDirection.y))
 		{
-			player.GetComponent<MoveOnGrid>().oldTileCoords = player.GetComponent<MoveOnGrid>().currentTileCoords;
-			player.GetComponent<MoveOnGrid>().currentTileCoords.x += (int)Mathf.Sign(player.GetComponent<MoveOnGrid>().currentTileCoords.x - currentTileCoords.x);
-			player.GetComponent<MoveOnGrid>().currentTileCoords.y += (int)Mathf.Sign(player.GetComponent<MoveOnGrid>().currentTileCoords.y - currentTileCoords.y);
-			CreateGrid.grid[player.GetComponent<MoveOnGrid>().oldTileCoords.x, player.GetComponent<MoveOnGrid>().oldTileCoords.y].GetComponent<Tile>().occupant = null;
-			CreateGrid.grid[player.GetComponent<MoveOnGrid>().currentTileCoords.x, player.GetComponent<MoveOnGrid>().currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
-			StartCoroutine(PushPlayer()); // Throw this into an update loop
+			GameObject tile = CreateGrid.grid[player.GetComponent<MoveOnGrid>().currentTileCoords.x + playerDirection.x, player.GetComponent<MoveOnGrid>().currentTileCoords.y + playerDirection.y];
+
+			if (!isBlowing)
+			{
+				if (tile.GetComponent<Tile>().IsUnoccupied())
+				{
+					player.GetComponent<MoveOnGrid>().oldTileCoords = player.GetComponent<MoveOnGrid>().currentTileCoords;
+					player.GetComponent<MoveOnGrid>().currentTileCoords.x += playerDirection.x;
+					player.GetComponent<MoveOnGrid>().currentTileCoords.y += playerDirection.y;
+					CreateGrid.grid[player.GetComponent<MoveOnGrid>().oldTileCoords.x, player.GetComponent<MoveOnGrid>().oldTileCoords.y].GetComponent<Tile>().occupant = null;
+					CreateGrid.grid[player.GetComponent<MoveOnGrid>().currentTileCoords.x, player.GetComponent<MoveOnGrid>().currentTileCoords.y].GetComponent<Tile>().occupant = gameObject;
+					StartCoroutine(PushPlayer());
+					isBlowing = true;
+				}
+				else
+				{
+					TurnOrder.EndTurn(gameObject);
+				}
+			}
+		}
+		else
+		{
+			TurnOrder.EndTurn(gameObject);
 		}
 	}
 
@@ -50,15 +73,15 @@ public class CloudEnemy : Enemy
 		Vector2Int currentPlayerCoords = player.GetComponent<MoveOnGrid>().currentTileCoords;
 
 		// Move to the designated tile
-		transform.position = Vector2.Lerp(CreateGrid.grid[oldPlayerCoords.x, oldPlayerCoords.y].transform.position, CreateGrid.grid[currentPlayerCoords.x, currentPlayerCoords.y].transform.position, percentDone);
+		player.transform.position = Vector2.Lerp(CreateGrid.grid[oldPlayerCoords.x, oldPlayerCoords.y].transform.position, CreateGrid.grid[currentPlayerCoords.x, currentPlayerCoords.y].transform.position, percentDone);
 		percentDone += 0.05f;
 
 		if (percentDone >= 1f)
 		{
-			transform.position = CreateGrid.grid[currentPlayerCoords.x, currentPlayerCoords.y].transform.position;
+			player.transform.position = CreateGrid.grid[currentPlayerCoords.x, currentPlayerCoords.y].transform.position;
 			percentDone = 0.05f;
-			isMoving = false;
 			TurnOrder.EndTurn(gameObject);
+			isBlowing = false;
 		}
 
 		yield return null;
